@@ -2114,7 +2114,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Amt.Value, "GetContract")+Sum(Fields!Amt.Value, "GetChangeOrders")</Value>
+                              <Value>=Sum(Fields!Amt.Value, "GetContract") + Sum(Fields!ScheduledValue.Value, "GetSOVCO")</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
