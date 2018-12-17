@@ -2001,7 +2001,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Amt.Value)</Value>
+                              <Value>=Sum(Fields!ScheduledValue.Value)</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -2082,7 +2082,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>GetChangeOrders</DataSetName>
+        <DataSetName>GetSOVCO</DataSetName>
         <Top>2.35527in</Top>
         <Left>5.9782in</Left>
         <Height>0.25in</Height>
