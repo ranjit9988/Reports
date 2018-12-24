@@ -120,19 +120,22 @@
           <DataField>CollegeID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="LineItemDesc">
+          <DataField>LineItemDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
-          select [ID],[ContractID],[ItemNo],[DescriptionWork],[ScheduledValue],
-          [PreviousApp],
-          [CurrentPeriod],[MaterialStored],[TotalStored],[BalanceToFinish],[Retainage],[ContractLineID],[ProjectID],[LastUpdateOn],[LastUpdateBy],[CollegeID],[EnvelopeID],[GC]
-          from SOV where contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Contract'))
-          union select [ID],[ContractID],[ItemNo],[DescriptionWork],[ScheduledValue],
-          [PreviousApp],
-          [CurrentPeriod],[MaterialStored],[TotalStored],[BalanceToFinish],[Retainage],[ContractLineID],[ProjectID],[LastUpdateOn],[LastUpdateBy],[CollegeID],[EnvelopeID],[GC]
-          from SOV where contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('LineItem'))
-
+          select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc
+          from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Contract'))
+          union select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc
+          from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('LineItem'))
         </CommandText>
         <QueryParameters>
           <QueryParameter Name="@RFIID">
@@ -255,17 +258,21 @@
           <DataField>EnvelopeID</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="TransPreviousApp">
-          <DataField>TransPreviousApp</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+        <Field Name="LineItemDesc">
+          <DataField>LineItemDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <Query>
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
-          select *, (SELECT IsNull(SUM(Amount),0)  FROM TransactionDetail WHERE ContractLineItemID  in  (select LineID from contractlineitems where IsDeleted= 0 And contractchangeorderid in
-          (select ContractDetailID from ContractDetail where IsDeleted= 0 And contractid = @RFIID and detailtype = 'Change Order'))) as TransPreviousApp from sov where contractid = @RFIID and contractlineid in
-          (select LineID from contractlineitems where IsDeleted= 0 And contractchangeorderid in (select ContractDetailID from ContractDetail where IsDeleted= 0 And contractid = @RFIID and detailtype = 'Change Order'))
+          select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc from sov
+          INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID
+          where SOV.contractid = @RFIID and contractlineid in
+          (select LineID from contractlineitems where IsDeleted= 0 And contractchangeorderid in
+          (select ContractDetailID from ContractDetail where IsDeleted= 0 And contractid = @RFIID and detailtype = 'Change Order'))
         </CommandText>
         <QueryParameters>
           <QueryParameter Name="@RFIID">
@@ -356,14 +363,18 @@
           <DataField>EnvelopeID</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="LineItemDesc">
+          <DataField>LineItemDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
-          select [ID],[ContractID],[ItemNo],[DescriptionWork],[ScheduledValue],
-          [PreviousApp],
-          [CurrentPeriod],[MaterialStored],[TotalStored],[BalanceToFinish],[Retainage],[ContractLineID],[ProjectID],[LastUpdateOn],[LastUpdateBy],[CollegeID],[EnvelopeID],[GC]
-          from SOV where contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Adjustment'))
+          select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description As LineItemDesc
+          from SOV  INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Adjustment'))
         </CommandText>
         <QueryParameters>
           <QueryParameter Name="@RFIID">
@@ -454,14 +465,18 @@
           <DataField>EnvelopeID</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="LineItemDesc">
+          <DataField>LineItemDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
-          select [ID],[ContractID],[ItemNo],[DescriptionWork],[ScheduledValue],
-          [PreviousApp],
-          [CurrentPeriod],[MaterialStored],[TotalStored],[BalanceToFinish],[Retainage],[ContractLineID],[ProjectID],[LastUpdateOn],[LastUpdateBy],[CollegeID],[EnvelopeID],[GC]
-          from SOV where contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Amendment'))
+          select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc
+          from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where Sov.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Amendment'))
         </CommandText>
         <QueryParameters>
           <QueryParameter Name="@RFIID">
@@ -552,11 +567,18 @@
           <DataField>EnvelopeID</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="LineItemDesc">
+          <DataField>LineItemDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
-          select * from sov where contractid = @RFIID and contractlineid in
+          select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As  LineItemDesc from sov
+          INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in
           (select LineID from contractlineitems where IsDeleted= 0 And contractchangeorderid in
           (select contractdetailid from contractdetail where contractid = @RFIID and detailtype = 'Increase Purchase Order' and IsDeleted= 0))
         </CommandText>
@@ -649,14 +671,18 @@
           <DataField>EnvelopeID</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="LineItemDesc">
+          <DataField>LineItemDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
-          select [ID],[ContractID],[ItemNo],[DescriptionWork],[ScheduledValue],
-          [PreviousApp],
-          [CurrentPeriod],[MaterialStored],[TotalStored],[BalanceToFinish],[Retainage],[ContractLineID],[ProjectID],[LastUpdateOn],[LastUpdateBy],[CollegeID],[EnvelopeID],[GC]
-          from SOV where contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Allowance'))
+          select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC],ContractLineItems.Description  As  LineItemDesc
+          from SOV  INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Allowance'))
         </CommandText>
         <QueryParameters>
           <QueryParameter Name="@RFIID">
@@ -747,14 +773,18 @@
           <DataField>EnvelopeID</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="LineItemDesc">
+          <DataField>LineItemDesc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
-          select [ID],[ContractID],[ItemNo],[DescriptionWork],[ScheduledValue],
-          [PreviousApp],
-          [CurrentPeriod],[MaterialStored],[TotalStored],[BalanceToFinish],[Retainage],[ContractLineID],[ProjectID],[LastUpdateOn],[LastUpdateBy],[CollegeID],[EnvelopeID],[GC]
-          from SOV where contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Alternate'))
+          select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
+          SOV.[PreviousApp],
+          SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC],ContractLineItems.Description  As  LineItemDesc
+          from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Alternate'))
         </CommandText>
         <QueryParameters>
           <QueryParameter Name="@RFIID">
@@ -2401,8 +2431,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVLineItems</DataSetName>
-        <Top>3.59971in</Top>
-        <Left>9.58633in</Left>
+        <Top>3.77194in</Top>
+        <Left>9.5805in</Left>
         <Height>0.25in</Height>
         <Width>1.05879in</Width>
         <ZIndex>28</ZIndex>
@@ -2550,8 +2580,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVLineItems</DataSetName>
-        <Top>3.36916in</Top>
-        <Left>6.29916in</Left>
+        <Top>3.47333in</Top>
+        <Left>6.15333in</Left>
         <Height>0.20833in</Height>
         <Width>3.34013in</Width>
         <ZIndex>29</ZIndex>
@@ -2701,8 +2731,8 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVLineItems</DataSetName>
-        <Top>3.63305in</Top>
-        <Left>6.29916in</Left>
+        <Top>3.71984in</Top>
+        <Left>6.15333in</Left>
         <Height>0.25in</Height>
         <Width>3.34013in</Width>
         <ZIndex>30</ZIndex>
@@ -3528,7 +3558,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"), 0)</Value>
+                              <Value>=IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"), 0)</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -3566,7 +3596,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"),0)</Value>
+                              <Value>=IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"),0)</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -3601,8 +3631,8 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"),0)
-+ IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"),0)</Value>
+                              <Value>=IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"),0)
++ IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"),0)</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -3966,7 +3996,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"), 0) +(IIf(Sum(Fields!CurrentPeriod.Value,"GetSOVCO") &gt; 0,Sum(Fields!CurrentPeriod.Value,"GetSOVCO"),0) +IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &gt; 0,Sum(Fields!MaterialStored.Value,"GetSOVCO"),0))</Value>
+                              <Value>=IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"), 0) +(IIf(Sum(Fields!CurrentPeriod.Value,"GetSOVCO") &gt; 0,Sum(Fields!CurrentPeriod.Value,"GetSOVCO"),0) +IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &gt; 0,Sum(Fields!MaterialStored.Value,"GetSOVCO"),0))</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -4001,7 +4031,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"),0) 
+                              <Value>=IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"),0) 
 +(IIf(Sum(Fields!CurrentPeriod.Value,"GetSOVCO") &lt; 0,Sum(Fields!CurrentPeriod.Value,"GetSOVCO"),0) +
 IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored.Value,"GetSOVCO"),0))</Value>
                               <Style>
@@ -4038,8 +4068,8 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=(IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"),0)
-+ IIf(Sum(Fields!TransPreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!TransPreviousApp.Value,"GetSOVCO"),0))
+                              <Value>=(IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &gt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"),0)
++ IIf(Sum(Fields!PreviousApp.Value,"GetSOVCO") &lt; 0,Sum(Fields!PreviousApp.Value,"GetSOVCO"),0))
 +
 (IIf(Sum(Fields!CurrentPeriod.Value,"GetSOVCO") &gt; 0,Sum(Fields!CurrentPeriod.Value,"GetSOVCO"), 0) +
 IIf(Sum(Fields!CurrentPeriod.Value,"GetSOVCO") &lt; 0,Sum(Fields!CurrentPeriod.Value,"GetSOVCO"), 0)) +
@@ -4329,7 +4359,10 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Sum(Fields!TotalStored.Value, "GetSOVLineItems")-Sum(Fields!PreviousApp.Value, "GetSOVLineItems")-Sum(Fields!Retainage.Value, "GetSOVLineItems")</Value>
+                <Value>=((Sum(Fields!TotalStored.Value, "GetSOVLineItems") + Sum(Fields!TotalStored.Value,"GetSOVAlternate") + Sum(Fields!TotalStored.Value,"GetSOVAllowance"))
+-((((Sum(Fields!PreviousApp.Value , "GetSOVLineItems") +Sum(Fields!CurrentPeriod.Value , "GetSOVLineItems")+ Sum(Fields!PreviousApp.Value ,"GetSOVAllowance") + Sum(Fields!CurrentPeriod.Value ,"GetSOVAllowance") + Sum(Fields!PreviousApp.Value , "GetSOVAlternate") +Sum(Fields!CurrentPeriod.Value , "GetSOVAlternate"))/100) * Sum(Fields!RetentionPercent.Value, "GetRetentionPercent"))+((Sum(Fields!RetentionPercent.Value, "GetRetentionPercent") * Sum(Fields!MaterialStored.Value, "GetRetention"))/100)))
+-((Sum(Fields!PreviousApp.Value,"GetSOVLineItems") + Sum(Fields!PreviousApp.Value,"GetSOVAllowance") + Sum(Fields!PreviousApp.Value,"GetSOVAlternate")) - 
+((Sum(Fields!PreviousApp.Value,"GetSOVLineItems") + Sum(Fields!PreviousApp.Value,"GetSOVAllowance") + Sum(Fields!PreviousApp.Value,"GetSOVAlternate"))/100   * Sum(Fields!RetentionPercent.Value, "GetRetentionPercent")))</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                   <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -4812,8 +4845,8 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>8.31207in</Top>
-        <Left>0.12011in</Left>
+        <Top>8.32596in</Top>
+        <Left>0.10622in</Left>
         <Height>0.95277in</Height>
         <Width>5.24167in</Width>
         <ZIndex>62</ZIndex>
@@ -5407,130 +5440,75 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox292">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Contracts and Line Items</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox292</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
-            <TablixRow>
-              <Height>0.18333in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox15">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox13</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox16">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox14</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="Textbox17">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox17</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox18">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox18</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox28">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -5549,21 +5527,11 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox15</rd:DefaultName>
+                      <rd:DefaultName>Textbox28</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -5576,7 +5544,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                 <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox18">
+                    <Textbox Name="Textbox42">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -5595,21 +5563,11 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox17</rd:DefaultName>
+                      <rd:DefaultName>Textbox42</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -5620,138 +5578,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox28">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox28</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox32">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox32</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox42">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox36</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox48">
@@ -5773,16 +5599,11 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox40</rd:DefaultName>
+                      <rd:DefaultName>Textbox48</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
                         </Border>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
                         <RightBorder>
                           <Color>Black</Color>
                           <Style>Solid</Style>
@@ -5817,16 +5638,128 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox44</rd:DefaultName>
+                      <rd:DefaultName>Textbox49</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
                         </Border>
-                        <BottomBorder>
+                        <RightBorder>
                           <Color>Black</Color>
                           <Style>Solid</Style>
                           <Width>1pt</Width>
-                        </BottomBorder>
+                        </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox65">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox65</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox69">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox69</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <LeftBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </LeftBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox70">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox70</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -5838,7 +5771,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.725in</Height>
+              <Height>0.70417in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -5864,7 +5797,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox18</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -5898,7 +5831,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox19</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
                         <LeftBorder>
                           <Color>Black</Color>
@@ -5940,7 +5873,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox20</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -6025,7 +5958,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox22</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
                         <RightBorder>
                           <Color>Black</Color>
@@ -7525,30 +7458,261 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox16">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox16</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox327">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Description</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox327</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
-              <KeepWithGroup>After</KeepWithGroup>
+              <Group Name="Group1">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!ContractLineID.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!ContractLineID.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Group1">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LineItemDesc.Value</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Group1</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details" />
+                </TablixMember>
+              </TablixMembers>
             </TablixMember>
             <TablixMember>
-              <Group Name="Details" />
-            </TablixMember>
-            <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox329">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox329</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <TopBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </TopBorder>
+                      <BottomBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </BottomBorder>
+                      <LeftBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </LeftBorder>
+                      <RightBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </RightBorder>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox330">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox330</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <TopBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </TopBorder>
+                      <BottomBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </BottomBorder>
+                      <LeftBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </LeftBorder>
+                      <RightBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </RightBorder>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+              <Visibility>
+                <Hidden>true</Hidden>
+              </Visibility>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVLineItems</DataSetName>
-        <Top>9.41484in</Top>
-        <Left>0.15601in</Left>
-        <Height>1.90833in</Height>
-        <Width>10.5389in</Width>
+        <Top>9.61276in</Top>
+        <Left>0.12674in</Left>
+        <Height>1.70417in</Height>
+        <Width>11.5389in</Width>
         <ZIndex>72</ZIndex>
         <Style>
           <Border>
@@ -7615,58 +7779,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.25in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox65">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Change Orders</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox65</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
-            <TablixRow>
-              <Height>0.25in</Height>
+              <Height>0.28125in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -7727,7 +7840,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox73</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -7762,7 +7874,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox126</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -7771,43 +7882,10 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox124">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox124</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox122">
@@ -7832,7 +7910,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox122</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -7867,7 +7944,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox106</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -7902,7 +7978,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox77</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -7937,7 +8012,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox104</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -7972,7 +8046,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox85</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -8007,7 +8080,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox79</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -8191,7 +8263,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!TransPreviousApp.Value</Value>
+                              <Value>=Fields!PreviousApp.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                               </Style>
@@ -8533,7 +8605,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!TransPreviousApp.Value)</Value>
+                              <Value>=Sum(Fields!PreviousApp.Value)</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -8773,24 +8845,138 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox380">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Description</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox380</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
-              <KeepWithGroup>After</KeepWithGroup>
+              <Group Name="Group4">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!ContractLineID.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!ContractLineID.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="LineItemDesc1">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LineItemDesc.Value</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>LineItemDesc1</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details4" />
+                </TablixMember>
+              </TablixMembers>
             </TablixMember>
             <TablixMember>
-              <Group Name="Details4" />
-            </TablixMember>
-            <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox382">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style />
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox382</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVCO</DataSetName>
-        <Top>15.08567in</Top>
-        <Left>0.15391in</Left>
-        <Height>1in</Height>
-        <Width>10.54142in</Width>
+        <Top>15.07525in</Top>
+        <Left>0.12421in</Left>
+        <Height>0.78125in</Height>
+        <Width>11.54142in</Width>
         <ZIndex>73</ZIndex>
         <Style>
           <Border>
@@ -8822,91 +9008,40 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.54167in</Width>
+              <Width>0.53919in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.72223in</Width>
+              <Width>2.71975in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.79167in</Width>
+              <Width>0.78919in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.68333in</Width>
+              <Width>0.68085in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.975in</Width>
+              <Width>0.97253in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.825in</Width>
+              <Width>0.82252in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.65834in</Width>
+              <Width>0.65587in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.90833in</Width>
+              <Width>0.90585in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.43585in</Width>
+              <Width>0.43338in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.99753in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.99752in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
-            <TablixRow>
-              <Height>0.25in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox69">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Adjustments</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox65</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
             <TablixRow>
               <Height>0.25in</Height>
               <TablixCells>
@@ -8934,7 +9069,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox71</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -8969,7 +9103,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox73</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9004,7 +9137,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox126</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9013,43 +9145,10 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox145">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox124</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox123">
@@ -9074,7 +9173,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox122</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9109,7 +9207,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox106</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9144,7 +9241,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox77</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9179,7 +9275,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox104</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9214,7 +9309,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox85</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9249,7 +9343,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox79</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -9284,7 +9377,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox75</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10015,24 +10107,138 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <TablixHeader>
+                <Size>0.99752in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox396">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Description</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox396</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
-              <KeepWithGroup>After</KeepWithGroup>
+              <Group Name="Group5">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!ContractLineID.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!ContractLineID.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixHeader>
+                <Size>0.99752in</Size>
+                <CellContents>
+                  <Textbox Name="LineItemDesc2">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LineItemDesc.Value</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>LineItemDesc2</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details5" />
+                </TablixMember>
+              </TablixMembers>
             </TablixMember>
             <TablixMember>
-              <Group Name="Details5" />
-            </TablixMember>
-            <TablixMember>
+              <TablixHeader>
+                <Size>0.99752in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox398">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style />
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox398</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVAdjustment</DataSetName>
-        <Top>16.1065in</Top>
-        <Left>0.15391in</Left>
-        <Height>1in</Height>
-        <Width>10.54142in</Width>
+        <Top>16.31483in</Top>
+        <Left>0.15392in</Left>
+        <Height>0.75in</Height>
+        <Width>11.5117in</Width>
         <ZIndex>74</ZIndex>
         <Style>
           <Border>
@@ -10064,93 +10270,42 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.54167in</Width>
+              <Width>0.53919in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.72223in</Width>
+              <Width>2.71975in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.79167in</Width>
+              <Width>0.7892in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.68333in</Width>
+              <Width>0.68085in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.975in</Width>
+              <Width>0.97253in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.825in</Width>
+              <Width>0.82252in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.65834in</Width>
+              <Width>0.65587in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.90833in</Width>
+              <Width>0.90585in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.43585in</Width>
+              <Width>0.43338in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.99753in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.99752in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.25in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox70">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Amendments</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox65</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
-            <TablixRow>
-              <Height>0.25in</Height>
+              <Height>0.21875in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -10176,7 +10331,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox71</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10211,7 +10365,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox73</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10246,7 +10399,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox126</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10255,43 +10407,10 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox159">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox124</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox160">
@@ -10316,7 +10435,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox122</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10351,7 +10469,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox106</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10386,7 +10503,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox77</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10421,7 +10537,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox104</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10456,7 +10571,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox85</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -10491,7 +10605,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox79</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11257,24 +11370,138 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <TablixHeader>
+                <Size>0.99753in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox412">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Description</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox412</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
-              <KeepWithGroup>After</KeepWithGroup>
+              <Group Name="Group6">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!ContractLineID.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!ContractLineID.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixHeader>
+                <Size>0.99753in</Size>
+                <CellContents>
+                  <Textbox Name="LineItemDesc3">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LineItemDesc.Value</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>LineItemDesc3</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details6" />
+                </TablixMember>
+              </TablixMembers>
             </TablixMember>
             <TablixMember>
-              <Group Name="Details6" />
-            </TablixMember>
-            <TablixMember>
+              <TablixHeader>
+                <Size>0.99753in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox414">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style />
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox414</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVAmendment</DataSetName>
-        <Top>17.12734in</Top>
-        <Left>0.15391in</Left>
-        <Height>1in</Height>
-        <Width>10.54142in</Width>
+        <Top>17.57526in</Top>
+        <Left>0.15392in</Left>
+        <Height>0.71875in</Height>
+        <Width>11.51172in</Width>
         <ZIndex>75</ZIndex>
         <Style>
           <Border>
@@ -11306,93 +11533,42 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.54167in</Width>
+              <Width>0.53919in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.72223in</Width>
+              <Width>2.71975in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.79167in</Width>
+              <Width>0.78919in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.68333in</Width>
+              <Width>0.68085in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.975in</Width>
+              <Width>0.97253in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.825in</Width>
+              <Width>0.82252in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.65834in</Width>
+              <Width>0.65587in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.90833in</Width>
+              <Width>0.90585in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.43585in</Width>
+              <Width>0.43338in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.99753in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>0.99752in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.25in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox89">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Increase Purchase Orders</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox65</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
-            <TablixRow>
-              <Height>0.25in</Height>
+              <Height>0.22917in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -11418,7 +11594,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox71</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11453,7 +11628,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox73</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11488,7 +11662,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox126</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11497,43 +11670,10 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox177">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox124</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox178">
@@ -11558,7 +11698,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox122</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11593,7 +11732,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox106</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11628,7 +11766,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox77</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11663,7 +11800,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox104</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11698,7 +11834,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox85</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -11733,7 +11868,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox79</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -12499,24 +12633,138 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <TablixHeader>
+                <Size>0.99752in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox428">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Description</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox428</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
-              <KeepWithGroup>After</KeepWithGroup>
+              <Group Name="Group7">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!ContractLineID.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!ContractLineID.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixHeader>
+                <Size>0.99752in</Size>
+                <CellContents>
+                  <Textbox Name="LineItemDesc4">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LineItemDesc.Value</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>LineItemDesc4</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details7" />
+                </TablixMember>
+              </TablixMembers>
             </TablixMember>
             <TablixMember>
-              <Group Name="Details7" />
-            </TablixMember>
-            <TablixMember>
+              <TablixHeader>
+                <Size>0.99752in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox430">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style />
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox430</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVIncreasePurchaseOrder</DataSetName>
-        <Top>18.14817in</Top>
+        <Top>18.84792in</Top>
         <Left>0.15391in</Left>
-        <Height>1in</Height>
-        <Width>10.54142in</Width>
+        <Height>0.72917in</Height>
+        <Width>11.5117in</Width>
         <ZIndex>76</ZIndex>
         <Style>
           <Border>
@@ -12583,76 +12831,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.19167in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox197">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Allowance</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox3</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
-            <TablixRow>
               <Height>0.18333in</Height>
               <TablixCells>
                 <TablixCell>
@@ -12679,7 +12857,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox13</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
                         <RightBorder>
                           <Color>Black</Color>
@@ -13043,7 +13221,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.725in</Height>
+              <Height>0.48542in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -13069,7 +13247,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox18</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -13103,18 +13281,8 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox19</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -14642,74 +14810,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                 </TablixCell>
               </TablixCells>
             </TablixRow>
-            <TablixRow>
-              <Height>0.25in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox238">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox47</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
@@ -14730,30 +14830,222 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox346">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox344</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox345">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Description</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox345</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
-              <KeepWithGroup>After</KeepWithGroup>
+              <Group Name="Group2">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!ContractLineID.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!ContractLineID.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Group2">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LineItemDesc.Value</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Group2</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <TopBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </TopBorder>
+                      <BottomBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </BottomBorder>
+                      <LeftBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </LeftBorder>
+                      <RightBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </RightBorder>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details3" />
+                </TablixMember>
+              </TablixMembers>
             </TablixMember>
             <TablixMember>
-              <Group Name="Details3" />
-            </TablixMember>
-            <TablixMember>
-              <KeepWithGroup>Before</KeepWithGroup>
-            </TablixMember>
-            <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox347">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox347</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <TopBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </TopBorder>
+                      <BottomBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </BottomBorder>
+                      <LeftBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </LeftBorder>
+                      <RightBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </RightBorder>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVAllowance</DataSetName>
-        <Top>11.344in</Top>
-        <Left>0.15391in</Left>
-        <Height>1.85in</Height>
-        <Width>10.5389in</Width>
+        <Top>11.68567in</Top>
+        <Left>0.12674in</Left>
+        <Height>1.16875in</Height>
+        <Width>11.5389in</Width>
         <ZIndex>77</ZIndex>
         <Style>
           <Border>
@@ -14819,76 +15111,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
-            <TablixRow>
-              <Height>0.19167in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox239">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Alternate</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox3</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
             <TablixRow>
               <Height>0.18333in</Height>
               <TablixCells>
@@ -15280,7 +15502,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.725in</Height>
+              <Height>0.70417in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -15306,7 +15528,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox18</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -15340,18 +15562,8 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                       <rd:DefaultName>Textbox19</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Style>None</Style>
+                          <Style>Solid</Style>
                         </Border>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -16879,74 +17091,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                 </TablixCell>
               </TablixCells>
             </TablixRow>
-            <TablixRow>
-              <Height>0.25in</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox280">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox47</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                    <ColSpan>11</ColSpan>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-                <TablixCell />
-              </TablixCells>
-            </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
@@ -16967,30 +17111,227 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox362">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox362</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <RightBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </RightBorder>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox363">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Description</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style>
+                          <TextAlign>Center</TextAlign>
+                        </Style>
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox363</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
             </TablixMember>
             <TablixMember>
-              <KeepWithGroup>After</KeepWithGroup>
+              <Group Name="Group3">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!ContractLineID.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!ContractLineID.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="LineItemDesc">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>=Fields!LineItemDesc.Value</Value>
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>LineItemDesc</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <TopBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </TopBorder>
+                      <BottomBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </BottomBorder>
+                      <LeftBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </LeftBorder>
+                      <RightBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </RightBorder>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember>
+                  <Group Name="Details8" />
+                </TablixMember>
+              </TablixMembers>
             </TablixMember>
             <TablixMember>
-              <Group Name="Details8" />
-            </TablixMember>
-            <TablixMember>
-              <KeepWithGroup>Before</KeepWithGroup>
-            </TablixMember>
-            <TablixMember>
+              <TablixHeader>
+                <Size>1in</Size>
+                <CellContents>
+                  <Textbox Name="Textbox365">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value />
+                            <Style>
+                              <FontSize>8pt</FontSize>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox365</rd:DefaultName>
+                    <Style>
+                      <Border>
+                        <Style>Solid</Style>
+                      </Border>
+                      <TopBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </TopBorder>
+                      <BottomBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </BottomBorder>
+                      <LeftBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </LeftBorder>
+                      <RightBorder>
+                        <Color>Black</Color>
+                        <Style>Solid</Style>
+                        <Width>1pt</Width>
+                      </RightBorder>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </CellContents>
+              </TablixHeader>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>GetSOVAlternate</DataSetName>
-        <Top>13.21484in</Top>
-        <Left>0.15391in</Left>
-        <Height>1.85in</Height>
-        <Width>10.5389in</Width>
+        <Top>13.26345in</Top>
+        <Left>0.12674in</Left>
+        <Height>1.3875in</Height>
+        <Width>11.5389in</Width>
         <ZIndex>78</ZIndex>
         <Style>
           <Border>
@@ -17349,7 +17690,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!PreviousApp.Value,"GetSOVAllowance")</Value>
+                              <Value />
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -17384,7 +17725,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=Sum(Fields!PreviousApp.Value,"GetSOVAllowance")</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -17565,7 +17906,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=(Sum(Fields!CurrentPeriod.Value,"GetSOVAllowance") + Sum(Fields!MaterialStored.Value,"GetSOVAllowance"))</Value>
+                              <Value />
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -17600,7 +17941,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=(Sum(Fields!CurrentPeriod.Value,"GetSOVAllowance") + Sum(Fields!MaterialStored.Value,"GetSOVAllowance"))</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -17778,7 +18119,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=(Sum(Fields!PreviousApp.Value,"GetSOVAllowance") + (Sum(Fields!CurrentPeriod.Value,"GetSOVAllowance") + Sum(Fields!MaterialStored.Value,"GetSOVAllowance")))</Value>
+                              <Value />
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -17813,7 +18154,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=(Sum(Fields!PreviousApp.Value,"GetSOVAllowance") + (Sum(Fields!CurrentPeriod.Value,"GetSOVAllowance") + Sum(Fields!MaterialStored.Value,"GetSOVAllowance")))</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>'$'#,0.00;('$'#,0.00)</Format>
@@ -17925,8 +18266,239 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
           </RightBorder>
         </Style>
       </Tablix>
+      <Textbox Name="Textbox502">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Allowance</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox502</rd:DefaultName>
+        <Top>11.43567in</Top>
+        <Left>0.12673in</Left>
+        <Height>0.25in</Height>
+        <Width>11.5389in</Width>
+        <ZIndex>83</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox503">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Contracts and Line Items</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox503</rd:DefaultName>
+        <Top>9.36276in</Top>
+        <Left>0.12673in</Left>
+        <Height>0.25in</Height>
+        <Width>11.5389in</Width>
+        <ZIndex>84</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox504">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Alternate</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox504</rd:DefaultName>
+        <Top>13.01345in</Top>
+        <Left>0.12674in</Left>
+        <Height>0.25in</Height>
+        <Width>11.5389in</Width>
+        <ZIndex>85</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox505">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Change Orders</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox505</rd:DefaultName>
+        <Top>14.82525in</Top>
+        <Left>0.12674in</Left>
+        <Height>0.25in</Height>
+        <Width>11.53637in</Width>
+        <ZIndex>86</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox506">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Adjustments</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox506</rd:DefaultName>
+        <Top>16.06483in</Top>
+        <Left>0.15392in</Left>
+        <Height>0.25in</Height>
+        <Width>11.51172in</Width>
+        <ZIndex>87</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox507">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Amendments</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox507</rd:DefaultName>
+        <Top>17.32526in</Top>
+        <Left>0.15392in</Left>
+        <Height>0.25in</Height>
+        <Width>11.51172in</Width>
+        <ZIndex>88</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox508">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Increase Purchase Orders</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox508</rd:DefaultName>
+        <Top>18.59792in</Top>
+        <Left>0.15391in</Left>
+        <Height>0.25in</Height>
+        <Width>11.51172in</Width>
+        <ZIndex>89</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>19.31961in</Height>
+    <Height>19.919in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -17960,7 +18532,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
       <Prompt>ContractID</Prompt>
     </ReportParameter>
   </ReportParameters>
-  <Width>10.86178in</Width>
+  <Width>11.69533in</Width>
   <Page>
     <PageHeight>8.5in</PageHeight>
     <PageWidth>11in</PageWidth>
