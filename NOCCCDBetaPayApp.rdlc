@@ -129,11 +129,11 @@
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
           select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc
           from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Contract'))
           union select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc
           from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('LineItem'))
         </CommandText>
@@ -267,7 +267,7 @@
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
           select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc from sov
           INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID
           where SOV.contractid = @RFIID and contractlineid in
@@ -372,7 +372,7 @@
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
           select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description As LineItemDesc
           from SOV  INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Adjustment'))
         </CommandText>
@@ -474,7 +474,7 @@
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
           select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As LineItemDesc
           from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where Sov.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Amendment'))
         </CommandText>
@@ -576,7 +576,7 @@
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
           select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC], ContractLineItems.Description  As  LineItemDesc from sov
           INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in
           (select LineID from contractlineitems where IsDeleted= 0 And contractchangeorderid in
@@ -680,7 +680,7 @@
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
           select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC],ContractLineItems.Description  As  LineItemDesc
           from SOV  INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Allowance'))
         </CommandText>
@@ -782,7 +782,7 @@
         <DataSourceName>VariableDataSource</DataSourceName>
         <CommandText>
           select SOV.[ID],SOV.[ContractID],SOV.[ItemNo],SOV.[DescriptionWork],SOV.[ScheduledValue],
-          SOV.[PreviousApp],
+          (Select IsNull(Sum(CurrentPeriod),0) + IsNull(Sum(MaterialStored),0) From SOV_Approved Where SOV_Approved.SOVID = SOV.ID) As PreviousApp,
           SOV.[CurrentPeriod],SOV.[MaterialStored],SOV.[TotalStored],SOV.[BalanceToFinish],SOV.[Retainage],SOV.[ContractLineID],SOV.[ProjectID],SOV.[LastUpdateOn],SOV.[LastUpdateBy],SOV.[CollegeID],SOV.[EnvelopeID],SOV.[GC],ContractLineItems.Description  As  LineItemDesc
           from SOV INNER JOIN ContractLineItems on ContractLineItems.LineID= Sov.ContractLineID where SOV.contractid = @RFIID and contractlineid in (select LineID from ContractLineItems where contractid = @RFIID and IsDeleted=0 and contractChangeOrderID = 0 and LineType in ('Alternate'))
         </CommandText>
@@ -7188,6 +7188,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -7199,14 +7200,17 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=replace(FormatNumber((Sum(Fields!TotalStored.Value)/Sum(Fields!ScheduledValue.Value)*100),2),"NaN","0")+"%"</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
+                                <Format>0.00%</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox99</rd:DefaultName>
@@ -7214,26 +7218,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Border>
                           <Style>Solid</Style>
                         </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
+                        <VerticalAlign>Top</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -8715,11 +8700,17 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
-                              <Style />
+                              <Value>=replace(FormatNumber((Sum(Fields!TotalStored.Value)/Sum(Fields!ScheduledValue.Value)*100),2),"NaN","0")+"%"</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Format>0.00%</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox142</rd:DefaultName>
@@ -9977,11 +9968,17 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
-                              <Style />
+                              <Value>=replace(FormatNumber((Sum(Fields!TotalStored.Value)/Sum(Fields!ScheduledValue.Value)*100),2),"NaN","0")+"%"</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Format>0.00%</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox142</rd:DefaultName>
@@ -11239,11 +11236,17 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
-                              <Style />
+                              <Value>=replace(FormatNumber((Sum(Fields!TotalStored.Value)/Sum(Fields!ScheduledValue.Value)*100),2),"NaN","0")+"%"</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Format>0.00%</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox142</rd:DefaultName>
@@ -12501,11 +12504,17 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
-                              <Style />
+                              <Value>=replace(FormatNumber((Sum(Fields!TotalStored.Value)/Sum(Fields!ScheduledValue.Value)*100),2),"NaN","0")+"%"</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Format>0.00%</Format>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox142</rd:DefaultName>
@@ -14635,14 +14644,17 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=replace(FormatNumber((Sum(Fields!TotalStored.Value)/Sum(Fields!ScheduledValue.Value)*100),2),"NaN","0")+"%"</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
+                                <Format>0.00%</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox99</rd:DefaultName>
@@ -14650,26 +14662,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Border>
                           <Style>Solid</Style>
                         </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -16916,14 +16908,17 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=replace(FormatNumber((Sum(Fields!TotalStored.Value)/Sum(Fields!ScheduledValue.Value)*100),2),"NaN","0")+"%"</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
+                                <Format>0.00%</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox99</rd:DefaultName>
@@ -16931,26 +16926,6 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
                         <Border>
                           <Style>Solid</Style>
                         </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                          <Width>1pt</Width>
-                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -18395,7 +18370,7 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
         <Top>16.06483in</Top>
         <Left>0.15392in</Left>
         <Height>0.25in</Height>
-        <Width>10.55781in</Width>
+        <Width>10.55614in</Width>
         <ZIndex>87</ZIndex>
         <Style>
           <Border>
@@ -18458,10 +18433,10 @@ IIf(Sum(Fields!MaterialStored.Value,"GetSOVCO") &lt; 0,Sum(Fields!MaterialStored
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox508</rd:DefaultName>
-        <Top>18.58403in</Top>
+        <Top>18.59792in</Top>
         <Left>0.15391in</Left>
         <Height>0.25in</Height>
-        <Width>10.54395in</Width>
+        <Width>10.55615in</Width>
         <ZIndex>89</ZIndex>
         <Style>
           <Border>
